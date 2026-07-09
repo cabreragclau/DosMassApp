@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dos Más App — Reservas online para clubes de pádel</title>
+  <meta name="description" content="Sistema de reservas online para clubes de pádel en Chile. Tus jugadores reservan solos, tú ves todo desde el panel. Sin WhatsApp, sin doble-reservas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #08090C;
+      --surface:   #0F1218;
+      --card:      #151A23;
+      --border:    #1C2230;
+      --lime:      #AAFF00;
+      --lime-dim:  rgba(170,255,0,0.07);
+      --lime-glow: rgba(170,255,0,0.15);
+      --text:      #EEF2F7;
+      --muted:     #6B7A8D;
+      --white:     #FFFFFF;
+      --radius:    12px;
+      --font-d:    'Space Grotesk', sans-serif;
+      --font-b:    'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-b);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── NAV ───────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8,9,12,0.88);
+      backdrop-filter: blur(12px);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 24px; max-width: 1080px; margin: 0 auto;
+    }
+    .wordmark {
+      font-family: var(--font-d); font-weight: 700; font-size: 1.15rem;
+      color: var(--white); letter-spacing: -0.02em;
+    }
+    .wordmark span { color: var(--lime); }
+    .nav-cta {
+      background: var(--lime); color: var(--bg);
+      font-family: var(--font-d); font-weight: 600; font-size: 0.875rem;
+      padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer;
+      text-decoration: none; display: inline-block;
+      transition: opacity 0.15s;
+    }
+    .nav-cta:hover { opacity: 0.88; }
+
+    /* ── HERO ───────────────────────────────────────────────── */
+    .hero {
+      padding: 80px 0 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .hero-eyebrow {
+      font-family: var(--font-d); font-size: 0.75rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--lime); margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: var(--font-d); font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700; line-height: 1.1; letter-spacing: -0.03em;
+      color: var(--white); margin-bottom: 20px;
+    }
+    .hero h1 em { font-style: normal; color: var(--lime); }
+    .hero-sub {
+      color: var(--muted); font-size: 1.05rem; line-height: 1.65;
+      margin-bottom: 36px; max-width: 440px;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--lime); color: var(--bg);
+      font-family: var(--font-d); font-weight: 600; font-size: 0.9rem;
+      padding: 13px 24px; border-radius: 9px; border: none; cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      transition: opacity 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-ghost {
+      background: transparent; color: var(--text);
+      font-family: var(--font-d); font-weight: 500; font-size: 0.9rem;
+      padding: 13px 24px; border-radius: 9px;
+      border: 1px solid var(--border); cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--lime); color: var(--lime); }
+
+    /* ── MOCKUP ANIMADO ─────────────────────────────────────── */
+    .mockup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 0 60px rgba(170,255,0,0.06);
+    }
+    .mockup-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .mockup-title {
+      font-family: var(--font-d); font-size: 0.8rem; font-weight: 600;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    .mockup-date {
+      font-size: 0.75rem; color: var(--muted);
+      background: var(--card); padding: 4px 10px; border-radius: 20px;
+      border: 1px solid var(--border);
+    }
+    .court-row {
+      background: var(--card); border-radius: 10px;
+      padding: 14px 16px; margin-bottom: 8px;
+      border: 1px solid var(--border);
+    }
+    .court-row:last-child { margin-bottom: 0; }
+    .court-name {
+      font-family: var(--font-d); font-size: 0.8rem; font-weight: 600;
+      color: var(--text); margin-bottom: 10px;
+    }
+    .slots { display: flex; gap: 6px; flex-wrap: wrap; }
+    .slot {
+      font-family: var(--font-d); font-size: 0.72rem; font-weight: 600;
+      padding: 5px 10px; border-radius: 6px;
+      border: 1px solid transparent;
+      transition: all 0.4s ease;
+    }
+    .slot.available {
+      background: rgba(170,255,0,0.1);
+      color: var(--lime);
+      border-color: rgba(170,255,0,0.25);
+    }
+    .slot.booked {
+      background: var(--surface);
+      color: var(--muted);
+      border-color: var(--border);
+      text-decoration: line-through;
+    }
+    .slot.booking {
+      background: var(--lime);
+      color: var(--bg);
+      border-color: var(--lime);
+      transform: scale(1.06);
+    }
+    .mockup-footer {
+      margin-top: 14px; padding-top: 14px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .live-dot {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.72rem; color: var(--muted);
+    }
+    .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--lime);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .reservas-count {
+      font-family: var(--font-d); font-size: 0.75rem; font-weight: 600;
+      color: var(--lime);
+    }
+
+    /* ── PAIN POINTS ────────────────────────────────────────── */
+    .section { padding: 72px 0; }
+    .section-label {
+      font-family: var(--font-d); font-size: 0.72rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--lime); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: var(--font-d); font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700; letter-spacing: -0.02em;
+      color: var(--white); margin-bottom: 48px; line-height: 1.2;
+    }
+    .pain-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    }
+    .pain-card {
+      background: var(--card); border-radius: var(--radius);
+      border: 1px solid var(--border); padding: 28px 24px;
+    }
+    .pain-icon { font-size: 1.8rem; margin-bottom: 14px; }
+    .pain-title {
+      font-family: var(--font-d); font-weight: 600; font-size: 1rem;
+      color: var(--white); margin-bottom: 8px;
+    }
+    .pain-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── DIVIDER ────────────────────────────────────────────── */
+    .divider {
+      height: 1px; background: var(--border); margin: 0;
+    }
+
+    /* ── FUNCIONALIDADES ────────────────────────────────────── */
+    .features-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+    }
+    .feature-card {
+      background: var(--card); border-radius: var(--radius);
+      border: 1px solid var(--border); padding: 28px 24px;
+      transition: border-color 0.2s;
+    }
+    .feature-card:hover { border-color: rgba(170,255,0,0.3); }
+    .feature-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--lime-dim); border: 1px solid rgba(170,255,0,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; margin-bottom: 16px;
+    }
+    .feature-title {
+      font-family: var(--font-d); font-weight: 600; font-size: 1rem;
+      color: var(--white); margin-bottom: 8px;
+    }
+    .feature-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── DEMO ───────────────────────────────────────────────── */
+    .demo-box {
+      background: var(--card); border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 40px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .demo-box::before {
+      content: '';
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 60%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--lime), transparent);
+    }
+    .demo-label {
+      font-family: var(--font-d); font-size: 0.72rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--lime); margin-bottom: 12px;
+    }
+    .demo-title {
+      font-family: var(--font-d); font-size: 1.5rem; font-weight: 700;
+      color: var(--white); margin-bottom: 10px; letter-spacing: -0.02em;
+    }
+    .demo-desc { color: var(--muted); font-size: 0.9rem; margin-bottom: 28px; }
+    .demo-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(170,255,0,0.08); border: 1px solid rgba(170,255,0,0.2);
+      color: var(--lime); font-size: 0.78rem; font-weight: 500;
+      padding: 6px 14px; border-radius: 20px; margin-bottom: 24px;
+    }
+
+    /* ── PRECIOS ────────────────────────────────────────────── */
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+      max-width: 720px; margin: 0 auto;
+    }
+    .price-card {
+      background: var(--card); border-radius: 16px;
+      border: 1px solid var(--border); padding: 32px 28px;
+    }
+    .price-card.featured {
+      border-color: rgba(170,255,0,0.35);
+      background: linear-gradient(135deg, var(--card), rgba(170,255,0,0.04));
+      position: relative;
+    }
+    .price-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--lime); color: var(--bg);
+      font-family: var(--font-d); font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 4px 14px; border-radius: 20px;
+    }
+    .price-name {
+      font-family: var(--font-d); font-size: 0.85rem; font-weight: 600;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 14px;
+    }
+    .price-amount {
+      font-family: var(--font-d); font-size: 2rem; font-weight: 700;
+      color: var(--white); letter-spacing: -0.03em; line-height: 1;
+      margin-bottom: 4px;
+    }
+    .price-amount span { font-size: 1rem; font-weight: 500; color: var(--muted); }
+    .price-desc { font-size: 0.8rem; color: var(--muted); margin-bottom: 24px; }
+    .price-features { list-style: none; margin-bottom: 28px; }
+    .price-features li {
+      font-size: 0.875rem; color: var(--text); padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .price-features li:last-child { border-bottom: none; }
+    .price-features li::before {
+      content: '✓'; color: var(--lime);
+      font-family: var(--font-d); font-weight: 700; font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+    .btn-price {
+      width: 100%; padding: 12px;
+      border-radius: 9px; border: 1px solid var(--border);
+      background: transparent; color: var(--text);
+      font-family: var(--font-d); font-weight: 600; font-size: 0.875rem;
+      cursor: pointer; text-decoration: none; display: block; text-align: center;
+      transition: all 0.15s;
+    }
+    .btn-price:hover { border-color: var(--lime); color: var(--lime); }
+    .btn-price.featured-btn {
+      background: var(--lime); color: var(--bg); border-color: var(--lime);
+    }
+    .btn-price.featured-btn:hover { opacity: 0.88; }
+
+    /* ── CTA FINAL ───────────────────────────────────────────── */
+    .cta-section { padding: 80px 0; text-align: center; }
+    .cta-title {
+      font-family: var(--font-d); font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 700; letter-spacing: -0.03em;
+      color: var(--white); margin-bottom: 16px; line-height: 1.15;
+    }
+    .cta-title em { font-style: normal; color: var(--lime); }
+    .cta-sub { color: var(--muted); font-size: 1rem; margin-bottom: 36px; }
+    .cta-actions {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    }
+    .btn-wsp {
+      background: #25D366; color: #fff;
+      font-family: var(--font-d); font-weight: 600; font-size: 0.9rem;
+      padding: 14px 28px; border-radius: 9px; border: none; cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      transition: opacity 0.15s;
+    }
+    .btn-wsp:hover { opacity: 0.88; }
+    .btn-mail {
+      background: transparent; color: var(--text);
+      font-family: var(--font-d); font-weight: 500; font-size: 0.9rem;
+      padding: 14px 28px; border-radius: 9px;
+      border: 1px solid var(--border); cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .btn-mail:hover { border-color: var(--lime); color: var(--lime); }
+
+    /* ── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px; text-align: center;
+    }
+    .footer-inner {
+      max-width: 1080px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-word {
+      font-family: var(--font-d); font-weight: 700; font-size: 0.9rem;
+      color: var(--white);
+    }
+    .footer-word span { color: var(--lime); }
+    .footer-copy { font-size: 0.8rem; color: var(--muted); }
+
+    /* ── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; gap: 40px; padding: 52px 0 40px; }
+      .pain-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .mockup { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .dot { animation: none; }
+      .slot { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="wordmark">dos más <span>app</span></div>
+    <a href="https://wa.me/56961251288?text=Hola,%20quiero%20saber%20más%20sobre%20Dos%20Más%20App%20para%20mi%20club%20de%20pádel"
+       target="_blank" class="nav-cta">Agendar demo →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="container">
+  <div class="hero">
+    <div>
+      <p class="hero-eyebrow">Sistema de reservas para clubes de pádel</p>
+      <h1>Tu club, sin el <em>caos</em> del WhatsApp</h1>
+      <p class="hero-sub">
+        Tus jugadores reservan cancha desde el celular en menos de un minuto.
+        Tú ves todo desde el panel de administrador, en tiempo real.
+        Sin mensajes, sin confusiones, sin doble-reservas.
+      </p>
+      <div class="hero-actions">
+        <a href="https://wa.me/56961251288?text=Hola,%20quiero%20ver%20una%20demo%20de%20Dos%20Más%20App%20para%20mi%20club"
+           target="_blank" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          </svg>
+          Hablar por WhatsApp
+        </a>
+        <a href="https://padel-reserva.vercel.app" target="_blank" class="btn-ghost">
+          Ver demo en vivo →
+        </a>
+      </div>
+    </div>
+
+    <!-- MOCKUP ANIMADO -->
+    <div class="mockup">
+      <div class="mockup-header">
+        <span class="mockup-title">Disponibilidad</span>
+        <span class="mockup-date">Hoy · sábado</span>
+      </div>
+
+      <div class="court-row">
+        <div class="court-name">Cancha 1</div>
+        <div class="slots">
+          <div class="slot booked">09:00</div>
+          <div class="slot booked">10:00</div>
+          <div class="slot available" id="s1">11:00</div>
+          <div class="slot available">12:00</div>
+          <div class="slot available">13:00</div>
+        </div>
+      </div>
+
+      <div class="court-row">
+        <div class="court-name">Cancha 2</div>
+        <div class="slots">
+          <div class="slot available">09:00</div>
+          <div class="slot available" id="s2">10:00</div>
+          <div class="slot available">11:00</div>
+          <div class="slot booked">12:00</div>
+          <div class="slot available">13:00</div>
+        </div>
+      </div>
+
+      <div class="court-row">
+        <div class="court-name">Cancha 3</div>
+        <div class="slots">
+          <div class="slot booked">09:00</div>
+          <div class="slot available">10:00</div>
+          <div class="slot available">11:00</div>
+          <div class="slot available" id="s3">12:00</div>
+          <div class="slot booked">13:00</div>
+        </div>
+      </div>
+
+      <div class="mockup-footer">
+        <div class="live-dot">
+          <div class="dot"></div>
+          Actualizando en tiempo real
+        </div>
+        <span class="reservas-count" id="res-count">7 reservas hoy</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- DOLOR -->
+<div class="container">
+  <div class="section">
+    <p class="section-label">¿Te suena familiar?</p>
+    <h2 class="section-title">Gestionar canchas no debería<br>ser tu trabajo de tiempo completo</h2>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-icon">📱</div>
+        <div class="pain-title">Reservas perdidas en el chat</div>
+        <div class="pain-desc">Los mensajes de WhatsApp se mezclan, se olvidan o llegan cuando ya hay otro jugador en la cancha.</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">😤</div>
+        <div class="pain-title">Doble-reservas que generan conflictos</div>
+        <div class="pain-desc">Dos personas confirmadas para la misma cancha y el mismo horario. Una situación incómoda que daña la reputación del club.</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🗓️</div>
+        <div class="pain-title">Sin visibilidad de lo que pasa</div>
+        <div class="pain-desc">¿Cuántas canchas van ocupadas mañana? ¿Quién reservó el sábado a las 10? Sin un sistema, nadie lo sabe con certeza.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- FUNCIONALIDADES -->
+<div class="container">
+  <div class="section">
+    <p class="section-label">Qué incluye</p>
+    <h2 class="section-title">Todo lo que tu club necesita,<br>nada de lo que no</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <div class="feature-title">Disponibilidad en tiempo real</div>
+        <div class="feature-desc">Tus jugadores ven exactamente qué canchas están libres, por día y horario. Si alguien reserva, el slot se bloquea al instante para todos los demás.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔐</div>
+        <div class="feature-title">Panel de administrador</div>
+        <div class="feature-desc">Ve todas las reservas del día en una tabla clara. Cancela cualquier reserva con un click. Filtra por fecha. Todo desde el celular.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✉️</div>
+        <div class="feature-title">Confirmación automática por correo</div>
+        <div class="feature-desc">Cada vez que un jugador confirma su reserva, recibe un correo con los detalles de la cancha y el horario. Sin que tengas que hacer nada.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎾</div>
+        <div class="feature-title">Tablón "Busca tu match"</div>
+        <div class="feature-desc">Los jugadores publican que buscan compañeros para una pista. Una funcionalidad que activa la comunidad del club y genera más reservas.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- DEMO VIVO -->
+<div class="container">
+  <div class="section">
+    <div class="demo-box">
+      <div class="demo-label">Cliente real · funcionando hoy</div>
+      <h2 class="demo-title">Arena Padel San Antonio</h2>
+      <p class="demo-desc">4 canchas al aire libre en San Antonio, Valparaíso.<br>Sistema en producción desde 2025.</p>
+      <div class="demo-badge">
+        <div class="dot"></div>
+        En línea ahora mismo
+      </div>
+      <br>
+      <a href="https://padel-reserva.vercel.app" target="_blank" class="btn-primary">
+        Ver la app en vivo →
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PRECIOS -->
+<div class="container">
+  <div class="section">
+    <p class="section-label" style="text-align:center">Inversión</p>
+    <h2 class="section-title" style="text-align:center">Precio claro,<br>sin sorpresas</h2>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-name">Básico</div>
+        <div class="price-amount">$49.000 <span>CLP/mes</span></div>
+        <div class="price-desc">Hasta 4 canchas · ideal para clubs medianos</div>
+        <ul class="price-features">
+          <li>Reservas online ilimitadas</li>
+          <li>Panel de administrador</li>
+          <li>Confirmación por correo</li>
+          <li>Tablón de jugadores</li>
+          <li>Soporte por WhatsApp</li>
+        </ul>
+        <a href="https://wa.me/56961251288?text=Hola,%20me%20interesa%20el%20plan%20básico%20de%20Dos%20Más%20App"
+           target="_blank" class="btn-price">Contratar →</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-badge">Más elegido</div>
+        <div class="price-name">Estándar</div>
+        <div class="price-amount">$79.000 <span>CLP/mes</span></div>
+        <div class="price-desc">Hasta 8 canchas · ideal para clubs grandes</div>
+        <ul class="price-features">
+          <li>Todo lo del plan Básico</li>
+          <li>Hasta 8 canchas</li>
+          <li>Integración Mercado Pago</li>
+          <li>Reportes de ocupación</li>
+          <li>Correo con dominio propio</li>
+          <li>Soporte prioritario</li>
+        </ul>
+        <a href="https://wa.me/56961251288?text=Hola,%20me%20interesa%20el%20plan%20estándar%20de%20Dos%20Más%20App"
+           target="_blank" class="btn-price featured-btn">Contratar →</a>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top:20px; font-size:0.8rem; color:var(--muted)">
+      Ambos planes incluyen configuración inicial sin costo adicional · Precios no incluyen IVA
+    </p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- CTA FINAL -->
+<div class="container">
+  <div class="cta-section">
+    <h2 class="cta-title">¿Listo para ordenar<br>las reservas de <em>tu club</em>?</h2>
+    <p class="cta-sub">Te mostramos la app funcionando en 15 minutos. Sin compromiso.</p>
+    <div class="cta-actions">
+      <a href="https://wa.me/56961251288?text=Hola,%20quiero%20ver%20una%20demo%20de%20Dos%20Más%20App%20para%20mi%20club%20de%20pádel"
+         target="_blank" class="btn-wsp">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        </svg>
+        Escribir por WhatsApp
+      </a>
+      <a href="mailto:cla.cabrera.g@gmail.com?subject=Quiero%20saber%20más%20sobre%20Dos%20Más%20App"
+         class="btn-mail">
+        ✉️ cla.cabrera.g@gmail.com
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-word">dos más <span>app</span></div>
+    <div class="footer-copy">© 2025 · Sistema de reservas para clubes de pádel · Chile</div>
+  </div>
+</footer>
+
+<script>
+  // Animación del mockup: reservas en tiempo real
+  const slots = [
+    document.getElementById('s1'),
+    document.getElementById('s2'),
+    document.getElementById('s3'),
+  ]
+  const counter = document.getElementById('res-count')
+  let count = 7
+  let current = 0
+
+  function animateBooking() {
+    const slot = slots[current % slots.length]
+    if (!slot) return
+
+    // Fase 1: seleccionando (verde brillante)
+    slot.classList.remove('available')
+    slot.classList.add('booking')
+
+    setTimeout(() => {
+      // Fase 2: reservado (gris)
+      slot.classList.remove('booking')
+      slot.classList.add('booked')
+      count++
+      if (counter) counter.textContent = `${count} reservas hoy`
+      current++
+    }, 900)
+  }
+
+  // Anima cada 3 segundos, máximo 3 veces para no agotar los slots
+  let runs = 0
+  const interval = setInterval(() => {
+    if (runs >= 3) { clearInterval(interval); return }
+    animateBooking()
+    runs++
+  }, 3000)
+</script>
+
+</body>
+</html>
