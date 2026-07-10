@@ -12,17 +12,18 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #08090C;
-      --surface:   #0F1218;
-      --card:      #151A23;
-      --border:    #1C2230;
-      --lime:      #AAFF00;
-      --lime-dim:  rgba(170,255,0,0.07);
-      --lime-glow: rgba(170,255,0,0.15);
-      --text:      #EEF2F7;
-      --muted:     #6B7A8D;
-      --white:     #FFFFFF;
-      --radius:    12px;
+      --bg:        #0d1b2a; /* Azul noche profundo outdoor */
+      --surface:   #1b263b; /* Azul cancha intermedio */
+      --card:      #415a77; /* Azul grisáceo de estructuras */
+      --border:    #778da9; /* Líneas de la cancha de tenis/pádel */
+      --lime:      #aacc00; /* Verde pelota de pádel vibrante */
+      --lime-dim:  rgba(170, 204, 0, 0.1);
+      --lime-glow: rgba(170, 204, 0, 0.25);
+      --blue-padel: #0077b6; /* Azul vibrante de la alfombra de la pista */
+      --text:      #e0e1dd; /* Blanco arena suave */
+      --muted:     #93a1a1; 
+      --white:     #ffffff;
+      --radius:    14px;
       --font-d:    'Space Grotesk', sans-serif;
       --font-b:    'Inter', sans-serif;
     }
@@ -31,6 +32,11 @@
 
     body {
       background: var(--bg);
+      /* Patrón de fondo abstracto imitando líneas de cancha y red */
+      background-image: 
+        radial-gradient(circle at 90% 15%, var(--lime-dim) 0%, transparent 40%),
+        linear-gradient(rgba(13, 27, 42, 0.95), rgba(13, 27, 42, 0.98)),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 10px);
       color: var(--text);
       font-family: var(--font-b);
       font-size: 16px;
@@ -38,13 +44,26 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* Decoraciones de pelotas flotantes usando CSS */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 18%; left: 85%;
+      width: 35px; height: 35px;
+      background: #ccff00;
+      border-radius: 50%;
+      box-shadow: inset -5px -5px 0px #aacc00, 0 0 20px rgba(170,204,0,0.4);
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
     .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
 
     /* ── NAV ───────────────────────────────────────────────── */
     nav {
       position: sticky; top: 0; z-index: 100;
-      border-bottom: 1px solid var(--border);
-      background: rgba(8,9,12,0.88);
+      border-bottom: 1px solid rgba(119, 141, 169, 0.3);
+      background: rgba(13, 27, 42, 0.85);
       backdrop-filter: blur(12px);
     }
     .nav-inner {
@@ -52,340 +71,335 @@
       padding: 18px 24px; max-width: 1080px; margin: 0 auto;
     }
     .wordmark {
-      font-family: var(--font-d); font-weight: 700; font-size: 1.15rem;
+      font-family: var(--font-d); font-weight: 700; font-size: 1.25rem;
       color: var(--white); letter-spacing: -0.02em;
     }
-    .wordmark span { color: var(--lime); }
+    .wordmark span { color: var(--lime); background: var(--surface); padding: 2px 8px; border-radius: 6px; }
     .nav-cta {
       background: var(--lime); color: var(--bg);
-      font-family: var(--font-d); font-weight: 600; font-size: 0.875rem;
-      padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer;
+      font-family: var(--font-d); font-weight: 700; font-size: 0.875rem;
+      padding: 10px 22px; border-radius: 8px; border: none; cursor: pointer;
       text-decoration: none; display: inline-block;
-      transition: opacity 0.15s;
+      box-shadow: 0 4px 14px var(--lime-glow);
+      transition: all 0.2s ease;
     }
-    .nav-cta:hover { opacity: 0.88; }
+    .nav-cta:hover { transform: translateY(-1px); opacity: 0.95; }
 
     /* ── HERO ───────────────────────────────────────────────── */
     .hero {
-      padding: 80px 0 60px;
+      padding: 100px 0 80px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 64px;
       align-items: center;
     }
     .hero-eyebrow {
-      font-family: var(--font-d); font-size: 0.75rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.12em;
+      font-family: var(--font-d); font-size: 0.8rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.15em;
       color: var(--lime); margin-bottom: 20px;
     }
     .hero h1 {
-      font-family: var(--font-d); font-size: clamp(2rem, 4vw, 3rem);
+      font-family: var(--font-d); font-size: clamp(2.2rem, 4.5vw, 3.4rem);
       font-weight: 700; line-height: 1.1; letter-spacing: -0.03em;
-      color: var(--white); margin-bottom: 20px;
+      color: var(--white); margin-bottom: 24px;
     }
-    .hero h1 em { font-style: normal; color: var(--lime); }
+    .hero h1 em { font-style: normal; color: var(--lime); text-decoration: underline var(--blue-padel) 4px; }
     .hero-sub {
-      color: var(--muted); font-size: 1.05rem; line-height: 1.65;
-      margin-bottom: 36px; max-width: 440px;
+      color: #beccdc; font-size: 1.1rem; line-height: 1.7;
+      margin-bottom: 40px; max-width: 460px;
     }
-    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
     .btn-primary {
       background: var(--lime); color: var(--bg);
-      font-family: var(--font-d); font-weight: 600; font-size: 0.9rem;
-      padding: 13px 24px; border-radius: 9px; border: none; cursor: pointer;
+      font-family: var(--font-d); font-weight: 700; font-size: 0.95rem;
+      padding: 14px 28px; border-radius: 9px; border: none; cursor: pointer;
       text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
-      transition: opacity 0.15s;
+      box-shadow: 0 4px 20px rgba(170,204,0,0.3);
+      transition: all 0.2s;
     }
-    .btn-primary:hover { opacity: 0.88; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(170,204,0,0.4); }
     .btn-ghost {
-      background: transparent; color: var(--text);
-      font-family: var(--font-d); font-weight: 500; font-size: 0.9rem;
-      padding: 13px 24px; border-radius: 9px;
+      background: rgba(27, 38, 59, 0.6); color: var(--white);
+      font-family: var(--font-d); font-weight: 600; font-size: 0.95rem;
+      padding: 14px 28px; border-radius: 9px;
       border: 1px solid var(--border); cursor: pointer;
       text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
-      transition: border-color 0.15s, color 0.15s;
+      backdrop-filter: blur(4px);
+      transition: all 0.2s;
     }
-    .btn-ghost:hover { border-color: var(--lime); color: var(--lime); }
+    .btn-ghost:hover { border-color: var(--lime); color: var(--lime); background: rgba(27, 38, 59, 0.9); }
 
-    /* ── MOCKUP ANIMADO ─────────────────────────────────────── */
+    /* ── MOCKUP RE-DISEÑADO OUTDOOR ─────────────────────────── */
     .mockup {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 0 60px rgba(170,255,0,0.06);
+      background: linear-gradient(145deg, var(--blue-padel), #005f73); /* Color de pista azul */
+      border: 4px solid var(--white); /* Línea blanca reglamentaria */
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4), inset 0 0 40px rgba(0,0,0,0.2);
+      position: relative;
+    }
+    /* Malla / Red metálica de fondo para el mockup */
+    .mockup::after {
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 8px 8px;
+      border-radius: 16px; pointer-events: none;
     }
     .mockup-header {
       display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 16px;
+      margin-bottom: 20px; position: relative; z-index: 2;
     }
     .mockup-title {
-      font-family: var(--font-d); font-size: 0.8rem; font-weight: 600;
-      color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;
+      font-family: var(--font-d); font-size: 0.85rem; font-weight: 700;
+      color: var(--white); text-transform: uppercase; letter-spacing: 0.1em;
     }
     .mockup-date {
-      font-size: 0.75rem; color: var(--muted);
-      background: var(--card); padding: 4px 10px; border-radius: 20px;
-      border: 1px solid var(--border);
+      font-size: 0.8rem; color: var(--bg); font-weight: 600;
+      background: var(--lime); padding: 4px 12px; border-radius: 20px;
     }
     .court-row {
-      background: var(--card); border-radius: 10px;
-      padding: 14px 16px; margin-bottom: 8px;
-      border: 1px solid var(--border);
+      background: rgba(13, 27, 42, 0.85); border-radius: 12px;
+      padding: 16px; margin-bottom: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      position: relative; z-index: 2;
+      backdrop-filter: blur(4px);
     }
     .court-row:last-child { margin-bottom: 0; }
     .court-name {
-      font-family: var(--font-d); font-size: 0.8rem; font-weight: 600;
-      color: var(--text); margin-bottom: 10px;
+      font-family: var(--font-d); font-size: 0.85rem; font-weight: 700;
+      color: var(--white); margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
     }
-    .slots { display: flex; gap: 6px; flex-wrap: wrap; }
+    .court-name::before { content: ''; width: 8px; height: 8px; background: var(--lime); border-radius: 50%; }
+    .slots { display: flex; gap: 8px; flex-wrap: wrap; }
     .slot {
-      font-family: var(--font-d); font-size: 0.72rem; font-weight: 600;
-      padding: 5px 10px; border-radius: 6px;
+      font-family: var(--font-d); font-size: 0.75rem; font-weight: 700;
+      padding: 6px 12px; border-radius: 6px;
       border: 1px solid transparent;
       transition: all 0.4s ease;
     }
     .slot.available {
-      background: rgba(170,255,0,0.1);
+      background: var(--lime-dim);
       color: var(--lime);
-      border-color: rgba(170,255,0,0.25);
+      border-color: var(--lime);
     }
     .slot.booked {
-      background: var(--surface);
+      background: rgba(255,255,255,0.05);
       color: var(--muted);
-      border-color: var(--border);
+      border-color: rgba(255,255,255,0.1);
       text-decoration: line-through;
     }
     .slot.booking {
       background: var(--lime);
       color: var(--bg);
       border-color: var(--lime);
-      transform: scale(1.06);
+      transform: scale(1.08);
+      box-shadow: 0 0 15px var(--lime);
     }
     .mockup-footer {
-      margin-top: 14px; padding-top: 14px;
-      border-top: 1px solid var(--border);
+      margin-top: 18px; padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.1);
       display: flex; align-items: center; justify-content: space-between;
+      position: relative; z-index: 2;
     }
     .live-dot {
       display: flex; align-items: center; gap: 6px;
-      font-size: 0.72rem; color: var(--muted);
+      font-size: 0.75rem; color: var(--white);
     }
     .dot {
-      width: 7px; height: 7px; border-radius: 50%;
+      width: 8px; height: 8px; border-radius: 50%;
       background: var(--lime);
+      box-shadow: 0 0 10px var(--lime);
       animation: pulse 2s infinite;
     }
     @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.2); }
     }
     .reservas-count {
-      font-family: var(--font-d); font-size: 0.75rem; font-weight: 600;
+      font-family: var(--font-d); font-size: 0.8rem; font-weight: 700;
       color: var(--lime);
     }
 
-    /* ── PAIN POINTS ────────────────────────────────────────── */
-    .section { padding: 72px 0; }
+    /* ── SECCIONES GENERALES ─────────────────────────────────── */
+    .section { padding: 80px 0; }
     .section-label {
-      font-family: var(--font-d); font-size: 0.72rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.12em;
+      font-family: var(--font-d); font-size: 0.75rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.15em;
       color: var(--lime); margin-bottom: 12px;
     }
     .section-title {
-      font-family: var(--font-d); font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-family: var(--font-d); font-size: clamp(1.8rem, 3.5vw, 2.4rem);
       font-weight: 700; letter-spacing: -0.02em;
-      color: var(--white); margin-bottom: 48px; line-height: 1.2;
+      color: var(--white); margin-bottom: 54px; line-height: 1.2;
     }
-    .pain-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    .pain-grid, .features-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
     }
-    .pain-card {
-      background: var(--card); border-radius: var(--radius);
-      border: 1px solid var(--border); padding: 28px 24px;
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
+    
+    .pain-card, .feature-card {
+      background: var(--surface); border-radius: var(--radius);
+      border: 1px solid rgba(119, 141, 169, 0.2); padding: 32px 24px;
+      transition: all 0.2s ease;
     }
-    .pain-icon { font-size: 1.8rem; margin-bottom: 14px; }
-    .pain-title {
-      font-family: var(--font-d); font-weight: 600; font-size: 1rem;
-      color: var(--white); margin-bottom: 8px;
+    .feature-card:hover { 
+      border-color: var(--lime); 
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
-    .pain-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+    .pain-icon, .feature-icon { font-size: 2rem; margin-bottom: 16px; }
+    .feature-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: var(--lime-dim); border: 1px solid var(--lime);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .pain-title, .feature-title {
+      font-family: var(--font-d); font-weight: 700; font-size: 1.1rem;
+      color: var(--white); margin-bottom: 10px;
+    }
+    .pain-desc, .feature-desc { font-size: 0.9rem; color: #beccdc; line-height: 1.6; }
 
     /* ── DIVIDER ────────────────────────────────────────────── */
     .divider {
-      height: 1px; background: var(--border); margin: 0;
+      height: 1px; background: linear-gradient(90deg, transparent, rgba(119, 141, 169, 0.2), transparent); margin: 0;
     }
 
-    /* ── FUNCIONALIDADES ────────────────────────────────────── */
-    .features-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
-    }
-    .feature-card {
-      background: var(--card); border-radius: var(--radius);
-      border: 1px solid var(--border); padding: 28px 24px;
-      transition: border-color 0.2s;
-    }
-    .feature-card:hover { border-color: rgba(170,255,0,0.3); }
-    .feature-icon {
-      width: 40px; height: 40px; border-radius: 10px;
-      background: var(--lime-dim); border: 1px solid rgba(170,255,0,0.15);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; margin-bottom: 16px;
-    }
-    .feature-title {
-      font-family: var(--font-d); font-weight: 600; font-size: 1rem;
-      color: var(--white); margin-bottom: 8px;
-    }
-    .feature-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
-
-    /* ── DEMO ───────────────────────────────────────────────── */
+    /* ── DEMO BOX OUTDOOR ───────────────────────────────────── */
     .demo-box {
-      background: var(--card); border-radius: 16px;
-      border: 1px solid var(--border);
-      padding: 40px; text-align: center;
+      background: linear-gradient(135deg, var(--surface) 0%, var(--bg) 100%);
+      border-radius: 20px;
+      border: 2px solid var(--blue-padel);
+      padding: 50px 40px; text-align: center;
       position: relative; overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
     }
-    .demo-box::before {
-      content: '';
-      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-      width: 60%; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--lime), transparent);
-    }
-    .demo-label {
-      font-family: var(--font-d); font-size: 0.72rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.12em;
-      color: var(--lime); margin-bottom: 12px;
+    /* Red de tenis simulada de fondo */
+    .demo-box::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 40px;
+      background-image: linear-gradient(45deg, rgba(255,255,255,0.05) 25%, transparent 25%), linear-gradient(-45deg, rgba(255,255,255,0.05) 25%, transparent 25%);
+      background-size: 10px 10px; border-top: 2px solid rgba(255,255,255,0.2);
     }
     .demo-title {
-      font-family: var(--font-d); font-size: 1.5rem; font-weight: 700;
-      color: var(--white); margin-bottom: 10px; letter-spacing: -0.02em;
+      font-family: var(--font-d); font-size: 1.8rem; font-weight: 700;
+      color: var(--white); margin-bottom: 12px; letter-spacing: -0.02em;
     }
-    .demo-desc { color: var(--muted); font-size: 0.9rem; margin-bottom: 28px; }
+    .demo-desc { color: #beccdc; font-size: 0.95rem; margin-bottom: 32px; }
     .demo-badge {
       display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(170,255,0,0.08); border: 1px solid rgba(170,255,0,0.2);
-      color: var(--lime); font-size: 0.78rem; font-weight: 500;
-      padding: 6px 14px; border-radius: 20px; margin-bottom: 24px;
+      background: rgba(0, 119, 182, 0.15); border: 1px solid var(--blue-padel);
+      color: var(--white); font-size: 0.8rem; font-weight: 600;
+      padding: 6px 16px; border-radius: 20px; margin-bottom: 24px;
     }
 
     /* ── PRECIOS ────────────────────────────────────────────── */
     .pricing-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
-      max-width: 720px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;
+      max-width: 760px; margin: 0 auto;
     }
     .price-card {
-      background: var(--card); border-radius: 16px;
-      border: 1px solid var(--border); padding: 32px 28px;
+      background: var(--surface); border-radius: 18px;
+      border: 1px solid rgba(119, 141, 169, 0.2); padding: 40px 32px;
+      transition: transform 0.2s;
     }
     .price-card.featured {
-      border-color: rgba(170,255,0,0.35);
-      background: linear-gradient(135deg, var(--card), rgba(170,255,0,0.04));
+      border: 2px solid var(--lime);
+      background: linear-gradient(145deg, var(--surface), rgba(170, 204, 0, 0.02));
       position: relative;
+      transform: scale(1.03);
     }
     .price-badge {
-      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
       background: var(--lime); color: var(--bg);
-      font-family: var(--font-d); font-size: 0.7rem; font-weight: 700;
+      font-family: var(--font-d); font-size: 0.75rem; font-weight: 700;
       text-transform: uppercase; letter-spacing: 0.08em;
-      padding: 4px 14px; border-radius: 20px;
+      padding: 5px 16px; border-radius: 20px;
     }
     .price-name {
-      font-family: var(--font-d); font-size: 0.85rem; font-weight: 600;
-      color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;
-      margin-bottom: 14px;
+      font-family: var(--font-d); font-size: 0.9rem; font-weight: 700;
+      color: var(--lime); text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 16px;
     }
     .price-amount {
-      font-family: var(--font-d); font-size: 2rem; font-weight: 700;
+      font-family: var(--font-d); font-size: 2.4rem; font-weight: 700;
       color: var(--white); letter-spacing: -0.03em; line-height: 1;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
-    .price-amount span { font-size: 1rem; font-weight: 500; color: var(--muted); }
-    .price-desc { font-size: 0.8rem; color: var(--muted); margin-bottom: 24px; }
-    .price-features { list-style: none; margin-bottom: 28px; }
+    .price-amount span { font-size: 1.1rem; font-weight: 500; color: #beccdc; }
+    .price-desc { font-size: 0.85rem; color: #beccdc; margin-bottom: 32px; }
+    .price-features { list-style: none; margin-bottom: 36px; }
     .price-features li {
-      font-size: 0.875rem; color: var(--text); padding: 7px 0;
-      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem; color: var(--text); padding: 9px 0;
+      border-bottom: 1px solid rgba(119, 141, 169, 0.15);
       display: flex; align-items: center; gap: 10px;
     }
-    .price-features li:last-child { border-bottom: none; }
     .price-features li::before {
-      content: '✓'; color: var(--lime);
-      font-family: var(--font-d); font-weight: 700; font-size: 0.8rem;
-      flex-shrink: 0;
+      content: '✓'; color: var(--lime); font-weight: 700;
     }
     .btn-price {
-      width: 100%; padding: 12px;
-      border-radius: 9px; border: 1px solid var(--border);
-      background: transparent; color: var(--text);
-      font-family: var(--font-d); font-weight: 600; font-size: 0.875rem;
+      width: 100%; padding: 14px; border-radius: 9px;
+      border: 1px solid var(--border); background: transparent; color: var(--white);
+      font-family: var(--font-d); font-weight: 700; font-size: 0.9rem;
       cursor: pointer; text-decoration: none; display: block; text-align: center;
-      transition: all 0.15s;
+      transition: all 0.2s;
     }
-    .btn-price:hover { border-color: var(--lime); color: var(--lime); }
+    .btn-price:hover { background: rgba(255,255,255,0.05); border-color: var(--white); }
     .btn-price.featured-btn {
       background: var(--lime); color: var(--bg); border-color: var(--lime);
+      box-shadow: 0 4px 15px var(--lime-glow);
     }
-    .btn-price.featured-btn:hover { opacity: 0.88; }
+    .btn-price.featured-btn:hover { opacity: 0.93; transform: translateY(-1px); }
 
     /* ── CTA FINAL ───────────────────────────────────────────── */
-    .cta-section { padding: 80px 0; text-align: center; }
+    .cta-section { padding: 100px 0; text-align: center; }
     .cta-title {
-      font-family: var(--font-d); font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-family: var(--font-d); font-size: clamp(2rem, 4vw, 2.8rem);
       font-weight: 700; letter-spacing: -0.03em;
-      color: var(--white); margin-bottom: 16px; line-height: 1.15;
+      color: var(--white); margin-bottom: 20px; line-height: 1.2;
     }
     .cta-title em { font-style: normal; color: var(--lime); }
-    .cta-sub { color: var(--muted); font-size: 1rem; margin-bottom: 36px; }
-    .cta-actions {
-      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
-    }
+    .cta-sub { color: #beccdc; font-size: 1.1rem; margin-bottom: 40px; }
+    .cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    
     .btn-wsp {
       background: #25D366; color: #fff;
-      font-family: var(--font-d); font-weight: 600; font-size: 0.9rem;
-      padding: 14px 28px; border-radius: 9px; border: none; cursor: pointer;
+      font-family: var(--font-d); font-weight: 700; font-size: 0.95rem;
+      padding: 15px 32px; border-radius: 9px; border: none; cursor: pointer;
       text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
-      transition: opacity 0.15s;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+      transition: all 0.2s;
     }
-    .btn-wsp:hover { opacity: 0.88; }
+    .btn-wsp:hover { transform: translateY(-2px); opacity: 0.95; }
     .btn-mail {
-      background: transparent; color: var(--text);
-      font-family: var(--font-d); font-weight: 500; font-size: 0.9rem;
-      padding: 14px 28px; border-radius: 9px;
+      background: var(--surface); color: var(--white);
+      font-family: var(--font-d); font-weight: 600; font-size: 0.95rem;
+      padding: 15px 32px; border-radius: 9px;
       border: 1px solid var(--border); cursor: pointer;
       text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
-      transition: border-color 0.15s, color 0.15s;
+      transition: all 0.2s;
     }
     .btn-mail:hover { border-color: var(--lime); color: var(--lime); }
 
     /* ── FOOTER ─────────────────────────────────────────────── */
     footer {
-      border-top: 1px solid var(--border);
-      padding: 28px 24px; text-align: center;
+      border-top: 1px solid rgba(119, 141, 169, 0.2);
+      padding: 32px 24px; background: #09111a;
     }
     .footer-inner {
       max-width: 1080px; margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between;
       flex-wrap: wrap; gap: 12px;
     }
-    .footer-word {
-      font-family: var(--font-d); font-weight: 700; font-size: 0.9rem;
-      color: var(--white);
-    }
+    .footer-word { font-family: var(--font-d); font-weight: 700; font-size: 1rem; color: var(--white); }
     .footer-word span { color: var(--lime); }
-    .footer-copy { font-size: 0.8rem; color: var(--muted); }
+    .footer-copy { font-size: 0.85rem; color: var(--muted); }
 
     /* ── RESPONSIVE ─────────────────────────────────────────── */
     @media (max-width: 768px) {
-      .hero { grid-template-columns: 1fr; gap: 40px; padding: 52px 0 40px; }
-      .pain-grid { grid-template-columns: 1fr; }
-      .features-grid { grid-template-columns: 1fr; }
-      .pricing-grid { grid-template-columns: 1fr; }
-      .mockup { display: none; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .dot { animation: none; }
-      .slot { transition: none; }
+      .hero { grid-template-columns: 1fr; gap: 40px; padding: 60px 0 40px; }
+      .pain-grid, .features-grid, .pricing-grid { grid-template-columns: 1fr; }
+      .price-card.featured { transform: scale(1); }
+      .mockup { margin-top: 20px; }
     }
   </style>
 </head>
@@ -404,7 +418,7 @@
 <div class="container">
   <div class="hero">
     <div>
-      <p class="hero-eyebrow">Sistema de reservas para clubes de pádel</p>
+      <p class="hero-eyebrow">Sistema de reservas para clubes outdoor</p>
       <h1>Tu club, sin el <em>caos</em> del WhatsApp</h1>
       <p class="hero-sub">
         Tus jugadores reservan cancha desde el celular en menos de un minuto.
@@ -414,9 +428,6 @@
       <div class="hero-actions">
         <a href="https://wa.me/56961251288?text=Hola,%20quiero%20ver%20una%20demo%20de%20Dos%20Más%20App%20para%20mi%20club"
            target="_blank" class="btn-primary">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-          </svg>
           Hablar por WhatsApp
         </a>
         <a href="https://padel-reserva.vercel.app" target="_blank" class="btn-ghost">
@@ -428,12 +439,12 @@
     <!-- MOCKUP ANIMADO -->
     <div class="mockup">
       <div class="mockup-header">
-        <span class="mockup-title">Disponibilidad</span>
-        <span class="mockup-date">Hoy · sábado</span>
+        <span class="mockup-title">Disponibilidad de Canchas</span>
+        <span class="mockup-date">Hoy · En Vivo</span>
       </div>
 
       <div class="court-row">
-        <div class="court-name">Cancha 1</div>
+        <div class="court-name">Pista Azul 1 (Cristal Premium)</div>
         <div class="slots">
           <div class="slot booked">09:00</div>
           <div class="slot booked">10:00</div>
@@ -444,7 +455,7 @@
       </div>
 
       <div class="court-row">
-        <div class="court-name">Cancha 2</div>
+        <div class="court-name">Pista Azul 2 (Panorámica)</div>
         <div class="slots">
           <div class="slot available">09:00</div>
           <div class="slot available" id="s2">10:00</div>
@@ -455,7 +466,7 @@
       </div>
 
       <div class="court-row">
-        <div class="court-name">Cancha 3</div>
+        <div class="court-name">Pista Tenis de Arcilla</div>
         <div class="slots">
           <div class="slot booked">09:00</div>
           <div class="slot available">10:00</div>
@@ -468,7 +479,7 @@
       <div class="mockup-footer">
         <div class="live-dot">
           <div class="dot"></div>
-          Actualizando en tiempo real
+          Sincronizado en tiempo real
         </div>
         <span class="reservas-count" id="res-count">7 reservas hoy</span>
       </div>
@@ -541,16 +552,16 @@
 <div class="container">
   <div class="section">
     <div class="demo-box">
-      <div class="demo-label">Cliente real · funcionando hoy</div>
-      <h2 class="demo-title">Arena Padel San Antonio</h2>
-      <p class="demo-desc">4 canchas al aire libre en San Antonio, Valparaíso.<br>Sistema en producción desde 2026.</p>
+      <div class="demo-label">Modular y adaptable</div>
+      <h2 class="demo-title">Control Total de Pistas de Pádel & Tenis</h2>
+      <p class="demo-desc">Perfecto para complejos deportivos y clubes con canchas al aire libre.<br>Lanzamiento oficial de la plataforma.</p>
       <div class="demo-badge">
         <div class="dot"></div>
-        En línea ahora mismo
+        Plataforma Cloud Optimizada
       </div>
       <br>
       <a href="https://padel-reserva.vercel.app" target="_blank" class="btn-primary">
-        Ver la app en vivo →
+        Probar demo interactiva →
       </a>
     </div>
   </div>
@@ -585,7 +596,7 @@
         <div class="price-desc">Hasta 8 canchas · ideal para clubs grandes</div>
         <ul class="price-features">
           <li>Todo lo del plan Básico</li>
-          <li>Hasta 8 canchas</li>
+          <li>Hasta 8 canchas (Mixtas Pádel/Tenis)</li>
           <li>Integración Mercado Pago</li>
           <li>Reportes de ocupación</li>
           <li>Correo con dominio propio</li>
@@ -595,7 +606,7 @@
            target="_blank" class="btn-price featured-btn">Contratar →</a>
       </div>
     </div>
-    <p style="text-align:center; margin-top:20px; font-size:0.8rem; color:var(--muted)">
+    <p style="text-align:center; margin-top:30px; font-size:0.85rem; color:var(--muted)">
       Ambos planes incluyen configuración inicial sin costo adicional · Precios no incluyen IVA
     </p>
   </div>
@@ -611,9 +622,6 @@
     <div class="cta-actions">
       <a href="https://wa.me/56961251288?text=Hola,%20quiero%20ver%20una%20demo%20de%20Dos%20Más%20App%20para%20mi%20club%20de%20pádel"
          target="_blank" class="btn-wsp">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-        </svg>
         Escribir por WhatsApp
       </a>
       <a href="mailto:cla.cabrera.g@gmail.com?subject=Quiero%20saber%20más%20sobre%20Dos%20Más%20App"
@@ -647,12 +655,10 @@
     const slot = slots[current % slots.length]
     if (!slot) return
 
-    // Fase 1: seleccionando (verde brillante)
     slot.classList.remove('available')
     slot.classList.add('booking')
 
     setTimeout(() => {
-      // Fase 2: reservado (gris)
       slot.classList.remove('booking')
       slot.classList.add('booked')
       count++
@@ -661,7 +667,6 @@
     }, 900)
   }
 
-  // Anima cada 3 segundos, máximo 3 veces para no agotar los slots
   let runs = 0
   const interval = setInterval(() => {
     if (runs >= 3) { clearInterval(interval); return }
